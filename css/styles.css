@@ -1,0 +1,23 @@
+body,
+html {
+    padding:0;
+    margin:0;
+}
+
+
+#container {
+    margin: 5em 0;
+}
+
+h1 {
+    text-align:center;
+    font-family: sans-serif;
+}
+
+#banner {
+    width:800px;
+    margin: 0 auto;
+}
+ul#banner {
+    list-style-type: none;
+}

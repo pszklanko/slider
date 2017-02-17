@@ -21,3 +21,12 @@ h1 {
 ul#banner {
     list-style-type: none;
 }
+
+
+li {
+  display: none;
+}
+
+li.mainImg {
+  display: block;
+}

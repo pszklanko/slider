@@ -3,15 +3,41 @@
  * Library please put in separate file.
  */
  $('document').ready(function () {
-   var picturesArray = $("img").map(function () {
-        return $(this).attr("src");
-    }).get();
-    var itemNum = 1;
-    $('li').first().addClass('mainImg');
-    $('.mainImg').on('click', function () {
-      $('.mainImg').fadeOut('slow', function () {
+   $('li:gt(0)').hide();
 
-        $('.mainImg img').attr('src', picturesArray[itemNum++%picturesArray.length]);
-      }).fadeIn(1000);
-    })
+   var width = $('img').width();
+   var stripes = 8;
+   var stripeWidth = width/stripes;
+
+   for(var i = 0; i < stripes; i++) {
+     $('li:first').append('<span style="left:'+ i * stripeWidth +'px"></span>');
+   }
+
+   setInterval(function() {
+     sliceImg();
+   }, 2500);
 });
+
+function sliceImg() {
+  var collection = $('span');
+  if( collection.length > 0 ){
+    var i = 0;
+    var fn = function(){
+        var element = $(collection[i]);
+        element.fadeToggle(1000);
+        if( ++i < collection.length ){
+            setTimeout(fn, 500);
+        }
+    };
+    fn();
+}
+}
+
+function toggleImgs() {
+    $('li:first')
+       .toggle()
+       .next()
+       .toggle()
+       .end()
+       .appendTo('#banner');
+}

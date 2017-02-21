@@ -1,37 +1,48 @@
-$.fn.slider = function(interval) {
-  $('li:gt(0)').hide();
-  //$('li:first').addClass('mainImg');
-  var width = $('img').width();
-  var stripes = 8;
-  var stripeWidth = width/stripes;
-  var totalWidth = 0;
+$.fn.slider = function(options) {
+  var settings = $.extend({
+    interval: 3000,
+    container: this,
+    imgWidth: $('img').width(),
+    stripes: 8
+  }, options)
 
-  for (var i = 0; i < stripes; i++) {
-     $('ul').append('<span style="left:'+ i * stripeWidth +'px"></span>');
-   }
+  stripeWidth = calculateStripeWidth(settings);
 
-   setInterval(function() {
-     sliceImg();
-     $('span').each(function() {
-       totalWidth += $(this).width();
-     })
-     if(totalWidth===800) {
-       totalWidth = 0;
-       if($('span:visible').length === 8){
-         toggleImgs();
-       }
-     }
-   }, interval);
+  $('#container li:gt(0)').hide(); // hides all imgs but first
+  generateShades(settings, stripeWidth);
+  animate(settings);
 };
 
+function animate(settings) {
+  var totalWidth = 0;
+  setInterval(function() {
+    sliceImg();
+    $('#container span').each(function() {
+      totalWidth += $(this).width();
+    })
+    if(totalWidth === settings.imgWidth) {
+      totalWidth = 0;
+      if($('#container span:visible').length === settings.stripes){
+        toggleImgs();
+      }
+    }
+  }, settings.interval);
+}
+
+function generateShades(settings, stripeWidth) {
+  for (var i = 0; i < settings.stripes; i++) {
+     $('#container ul').append('<span style="left:'+ i * stripeWidth +'px"></span>');
+   }
+}
+
 function sliceImg() {
-  var collection = $('ul span');
-  if( collection.length > 0 ){
+  var slices = $('#container ul span');
+  if( slices.length > 0 ){
     var i = 0;
     var fn = function(){
-        var element = $(collection[i]);
+        var element = $(slices[i]);
         element.fadeToggle(1000);
-        if( ++i < collection.length ){
+        if( ++i < slices.length ){
           setTimeout(fn, 200);
         }
     };
@@ -40,10 +51,14 @@ function sliceImg() {
 }
 
 function toggleImgs() {
-    $('li:first')
+    $('#container li:first')
        .toggle()
        .next()
        .toggle()
        .end()
-       .insertBefore('span:first');
+       .insertBefore('#container span:first');
+}
+
+function calculateStripeWidth(settings) {
+  return settings.imgWidth/settings.stripes;
 }

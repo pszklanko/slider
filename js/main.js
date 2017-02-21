@@ -3,5 +3,5 @@
  * Library please put in separate file.
  */
  $('document').ready(function () {
-   $().slider(3000);
+   $('#container').slider({interval: 3000});
 });

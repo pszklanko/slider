@@ -2,31 +2,42 @@
  * Here initialization of scripts
  * Library please put in separate file.
  */
+ 'use strict';
  $('document').ready(function () {
-   $('li:gt(0)').hide();
+  $('li:gt(0)').hide();
+  //$('li:first').addClass('mainImg');
+  var width = $('img').width();
+  var stripes = 8;
+  var stripeWidth = width/stripes;
+  var totalWidth = 0;
 
-   var width = $('img').width();
-   var stripes = 8;
-   var stripeWidth = width/stripes;
-
-   for(var i = 0; i < stripes; i++) {
-     $('li:first').append('<span style="left:'+ i * stripeWidth +'px"></span>');
+  for (var i = 0; i < stripes; i++) {
+     $('ul').append('<span style="left:'+ i * stripeWidth +'px"></span>');
    }
 
    setInterval(function() {
      sliceImg();
-   }, 2500);
+     $('span').each(function() {
+       totalWidth += $(this).width();
+     })
+     if(totalWidth===800) {
+       totalWidth = 0;
+       if($('span:visible').length === 8){
+         toggleImgs();
+       }
+     }
+   }, 3000);
 });
 
 function sliceImg() {
-  var collection = $('span');
+  var collection = $('ul span');
   if( collection.length > 0 ){
     var i = 0;
     var fn = function(){
         var element = $(collection[i]);
         element.fadeToggle(1000);
         if( ++i < collection.length ){
-            setTimeout(fn, 500);
+          setTimeout(fn, 200);
         }
     };
     fn();
@@ -39,5 +50,5 @@ function toggleImgs() {
        .next()
        .toggle()
        .end()
-       .appendTo('#banner');
+       .insertBefore('span:first');
 }

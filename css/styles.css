@@ -24,11 +24,12 @@ ul#banner {
     list-style-type: none;
 }
 
-img {
+li {
   position: absolute;
   left: 0;
   right: 0;
 }
+
 span {
   background-color: black;
   width: 100px;
